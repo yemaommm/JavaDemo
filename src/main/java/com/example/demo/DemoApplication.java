@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +32,7 @@ import java.util.concurrent.Future;
 
 @SpringBootApplication
 @ServletComponentScan(basePackages = "com.example.demo")
+@ImportResource(locations = {"classpath:application-bean.xml"})  // 导入本地xml
 @RestController
 @RequestMapping("/test")
 @Api(value = "test", tags = "1.1", basePath = "test", description = "111")

@@ -12,11 +12,13 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.annotation.Resource;
+
 @Configuration
 //@ComponentScan(basePackageClasses = DemoApplication.class, useDefaultFilters = true)
 public class mvcConfigurer extends WebMvcConfigurerAdapter {
 
-    @Autowired
+    @Resource(name = "admin")
     Permission p;
 
     @Override

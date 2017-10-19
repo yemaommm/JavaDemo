@@ -27,7 +27,7 @@ public class DemoApplicationTests {
 	cacheService cs;
 	@Autowired
 	TestRestTemplate restTemplate;
-	@Resource(name = "admin2")
+	@Resource(name = "admin3")
     Permission permission;
 
 	public <T> T doObject(String url, Class<T> clazz){
