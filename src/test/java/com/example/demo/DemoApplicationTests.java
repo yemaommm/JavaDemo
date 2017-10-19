@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.dao.Permission;
 import com.example.demo.service.cacheService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,9 +35,13 @@ public class DemoApplicationTests {
 	}
 
 	@Test
-	public void contextLoads() {
+	public void contextLoads() throws IOException {
 
-		System.out.println(permission);
+        ObjectMapper om = new ObjectMapper();
+        System.out.println(om.readValue("true", boolean.class) == true);
+        String s = om.writeValueAsString(permission);
+        System.out.println(s);
+        System.out.println(permission);
 //		System.out.println(cs.testcache0("0"));
 //		System.out.println(cs.testcache100("100"));
 //		System.out.println(cs.testcache100("0100"));
