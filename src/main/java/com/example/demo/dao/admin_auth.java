@@ -1,6 +1,8 @@
 package com.example.demo.dao;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 
 public class admin_auth {
 

@@ -88,6 +88,12 @@ logging:
 
 test:
   admin:
+    id: 1
+    name: name
+    descritpion: descritpion
+    url: url
+    pid: 22
+  admin2:
     id: 2
     name: name
     descritpion: descritpion

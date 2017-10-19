@@ -1,5 +1,10 @@
 package com.example.demo.dao;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+@Component("admin2")
+@ConfigurationProperties(prefix = "test.admin2")
 public class Permission {
 
     private int id;
@@ -53,5 +58,16 @@ public class Permission {
 
     public void setPid(int pid) {
         this.pid = pid;
+    }
+
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", descritpion='" + descritpion + '\'' +
+                ", url='" + url + '\'' +
+                ", pid=" + pid +
+                '}';
     }
 }

@@ -26,7 +26,7 @@ public class mvcConfigurer extends WebMvcConfigurerAdapter {
 
     }
 
-    @Bean
+    @Bean("admin")
     @ConfigurationProperties(prefix = "test.admin")
     public Permission createPermission(){
         return new Permission();
