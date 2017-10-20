@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- 与 @ConfigurationProperties(prefix = "test.admin2") 冲突，如果引入注解则使用注解，xml中则被忽略 -->
-    <bean class="com.example.demo.dao.Permission" name="admin3" >
+    <bean class="com.example.demo.dao.Permission" id="admin3" name="admin3" >
         <property name="id" value="3"></property>
         <property name="descritpion" value="descritpion"></property>
     </bean>
