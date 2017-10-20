@@ -3,17 +3,26 @@ package com.example.demo;
 import com.example.demo.dao.Permission;
 import com.example.demo.service.cacheService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.LocalHostUriTemplateHandler;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.web.client.RootUriTemplateHandler;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.DefaultUriTemplateHandler;
+import org.springframework.web.util.UriTemplateHandler;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -34,6 +43,11 @@ public class DemoApplicationTests {
 
 	@Resource(name = "admin3")
     Permission permission;
+
+	@Before
+	public void init() throws NoSuchFieldException, IllegalAccessException {
+        restTemplate.setUriTemplateHandler(new RootUriTemplateHandler(HOST + ":" + port));
+    }
 
 	public <T> T doObject(String url, Class<T> clazz){
 		return restTemplate.getForObject(HOST + ":" + port + url, clazz);
@@ -56,8 +70,9 @@ public class DemoApplicationTests {
 
 	@Test
 	public void testAsync(){
-		boolean ret = this.doObject("/test/testaop", boolean.class);
-		assert ret == true;
+//		boolean ret = this.doObject("/test/testaop", boolean.class);
+        Boolean ret = restTemplate.getForObject("/test/testaop", boolean.class);
+        assert ret == true;
 	}
 
 	public <T> void lambdaPrintFun(T t){
