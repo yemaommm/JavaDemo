@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class admin_auth {
 
     private Long id;
-    @NotBlank
+    @NotBlank(message = "eeeeeeeeeeeeeeerror")
     private String username;
     private String passwd;
     private String token;

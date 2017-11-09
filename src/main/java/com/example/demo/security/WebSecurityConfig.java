@@ -69,8 +69,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        }
 
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/test/testaop")
+                .antMatchers("/test/**")
                 .permitAll()
                 .anyRequest().authenticated() //任何请求,登录后可以访问
                 .and()

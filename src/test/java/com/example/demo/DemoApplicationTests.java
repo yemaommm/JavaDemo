@@ -14,6 +14,10 @@ import org.springframework.boot.test.web.client.LocalHostUriTemplateHandler;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.client.RootUriTemplateHandler;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
@@ -91,6 +95,28 @@ public class DemoApplicationTests {
         });
         list.sort(this::lambdaSortFun);
         list.stream().forEach(this::lambdaPrintFun);
+    }
+
+    @Test
+    public void putObject(){
+        String forObject = restTemplate.getForObject("/test/putObject", String.class);
+        System.out.println(forObject);
+    }
+
+    @Test
+    public void  getObject(){
+        String data = "{\"id\":0,\"username\":\"\",\"passwd\":null,\"token\":null,\"tel\":null,\"group\":0,\"qrcode\":null,\"createtime\":null}";
+
+        HttpHeaders headers = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+        headers.setContentType(type);
+        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
+
+        HttpEntity<String> formEntity = new HttpEntity<String>(data, headers);
+
+        ResponseEntity<String> stringResponseEntity =
+                restTemplate.postForEntity("/test/testObject", formEntity, String.class);
+        System.out.println(stringResponseEntity.getBody());
     }
 
 }

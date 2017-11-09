@@ -19,12 +19,10 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -110,10 +108,18 @@ public class DemoApplication extends SpringBootServletInitializer {
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "admin_auth", value = "用户2ID", required = true, dataType = "admin_auth")
 	})
-	@ApiParam(name = "username", value = "用户ID")
+
     @RequestMapping(value = "/testObject", method = {RequestMethod.GET, RequestMethod.POST})
-	public admin_auth testObject(@Validated admin_auth cc, @RequestParam("username") String u){
+	public admin_auth testObject(@Valid @RequestBody admin_auth cc){
 		return cc;
+	}
+
+	@RequestMapping(value = "/putObject", method = {RequestMethod.GET, RequestMethod.GET})
+	public admin_auth putObject(){
+		admin_auth aa = new admin_auth();
+		aa.setUsername("123123");
+		aa.setId(0L);
+		return aa;
 	}
 
 
