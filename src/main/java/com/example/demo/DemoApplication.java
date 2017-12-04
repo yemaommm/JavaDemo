@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.annotation.TestParam;
 import com.example.demo.async.TestAsync;
 import com.example.demo.dao.admin_auth;
 import com.example.demo.mapper.AdminMapper;
@@ -120,6 +121,11 @@ public class DemoApplication extends SpringBootServletInitializer {
 		aa.setUsername("123123");
 		aa.setId(0L);
 		return aa;
+	}
+
+	@GetMapping("/testParam")
+	public String testParam(@TestParam String str, @TestParam Integer i){
+		return String.format("%s:%d", str, i);
 	}
 
 

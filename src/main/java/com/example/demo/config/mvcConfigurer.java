@@ -8,11 +8,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Configuration
 //@ComponentScan(basePackageClasses = DemoApplication.class, useDefaultFilters = true)
@@ -34,4 +36,13 @@ public class mvcConfigurer extends WebMvcConfigurerAdapter {
         return new Permission();
     }
 
+    /**
+     * 用来添加自定义参数的方法
+     * @param argumentResolvers
+     */
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(new TestMethodArgumentResolver());
+        super.addArgumentResolvers(argumentResolvers);
+    }
 }
