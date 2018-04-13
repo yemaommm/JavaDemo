@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -72,16 +73,17 @@ public class DemoApplication extends SpringBootServletInitializer {
 	@RequestMapping(value = "/testaop", method = {RequestMethod.GET})
 	public boolean testaop() throws InterruptedException, ExecutionException {
 
-		Future<String> run1 = testAsync.doRun1();
-		Future<String> run2 = testAsync.doRun2();
-        Future<String> run3 = testAsync.doRun3();
+		ArrayList<Future> futures = new ArrayList<>();
+		futures.add(testAsync.doRun1());
+		futures.add(testAsync.doRun2());
+		futures.add(testAsync.doRun3());
 
 		// 获取值的时候会进行等待
-        System.out.println(run1.get());
-        System.out.println(run3.get());
-		System.out.println(run2.get());
+		for (Future f : futures) {
+			f.get();
+		}
 
-		boolean b = run1.isDone() && run2.isDone();
+		boolean b = true;
 
 		return b;
 	}
