@@ -1,6 +1,5 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dao.aa;
 import com.example.demo.dao.admin_auth;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,8 +12,8 @@ import java.util.Map;
 @Mapper
 public interface AdminMapper {
 
-    @Select("SELECT * FROM admin_auth LIMIT 1")
-    aa find();
+//    @Select("SELECT * FROM admin_auth LIMIT 1")
+//    aa find();
 
     @Select("SELECT * FROM admin_auth WHERE username = #{ aa.username } LIMIT 1")
     admin_auth findName(@Param("auth") admin_auth aa);

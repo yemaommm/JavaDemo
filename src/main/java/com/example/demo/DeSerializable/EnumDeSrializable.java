@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 
-import static com.sun.deploy.trace.TraceLevel.values;
-
 public class EnumDeSrializable<T extends Enum> {
 
     private Class<?> clazz;
