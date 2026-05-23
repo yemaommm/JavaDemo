@@ -1,9 +1,15 @@
 import { useEffect, useRef } from "react";
-import { VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from "@/game/constants";
+import { VIEWPORT_HEIGHT, VIEWPORT_WIDTH, WORLD_HEIGHT } from "@/game/constants";
 import type { BrickState, CoinState, EnemyState, GameSnapshot, Surface } from "@/game/types";
 
 interface GameCanvasProps {
   snapshot: GameSnapshot;
+}
+
+const WORLD_VIEW_OFFSET_Y = WORLD_HEIGHT - VIEWPORT_HEIGHT;
+
+function toScreenY(worldY: number) {
+  return worldY - WORLD_VIEW_OFFSET_Y;
 }
 
 function drawBackground(ctx: CanvasRenderingContext2D, cameraX: number) {
@@ -38,23 +44,24 @@ function drawBackground(ctx: CanvasRenderingContext2D, cameraX: number) {
 
 function drawSurface(ctx: CanvasRenderingContext2D, surface: Surface, cameraX: number) {
   const x = surface.x - cameraX;
+  const y = toScreenY(surface.y);
   const topColor = surface.kind === "ground" ? "#70d15f" : "#78b45e";
   const bodyColor = surface.kind === "ground" ? "#c87c3c" : "#a76434";
 
   ctx.fillStyle = topColor;
-  ctx.fillRect(x, surface.y, surface.width, 18);
+  ctx.fillRect(x, y, surface.width, 18);
   ctx.fillStyle = bodyColor;
-  ctx.fillRect(x, surface.y + 18, surface.width, surface.height - 18);
+  ctx.fillRect(x, y + 18, surface.width, surface.height - 18);
 
   ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
   for (let stripe = 0; stripe < surface.width; stripe += 24) {
-    ctx.fillRect(x + stripe, surface.y + 18, 6, surface.height - 18);
+    ctx.fillRect(x + stripe, y + 18, 6, surface.height - 18);
   }
 }
 
 function drawBrick(ctx: CanvasRenderingContext2D, brick: BrickState, cameraX: number) {
   const x = brick.x - cameraX;
-  const y = brick.y + (brick.hit ? 6 : 0);
+  const y = toScreenY(brick.y + (brick.hit ? 6 : 0));
   const baseColor = brick.kind === "question" && !brick.hit ? "#f3b03f" : "#b86633";
   const accentColor = brick.kind === "question" && !brick.hit ? "#ffe28a" : "#d68648";
 
@@ -79,11 +86,12 @@ function drawCoin(ctx: CanvasRenderingContext2D, coin: CoinState, cameraX: numbe
   }
 
   const x = coin.x - cameraX;
+  const y = toScreenY(coin.y);
   const shimmer = Math.sin(timer * 6 + coin.x * 0.01) * 3;
   ctx.fillStyle = "#ffd451";
-  ctx.fillRect(x + 6, coin.y + shimmer, 12, 24);
+  ctx.fillRect(x + 6, y + shimmer, 12, 24);
   ctx.fillStyle = "#fff0aa";
-  ctx.fillRect(x + 10, coin.y + 4 + shimmer, 4, 16);
+  ctx.fillRect(x + 10, y + 4 + shimmer, 4, 16);
 }
 
 function drawEnemy(ctx: CanvasRenderingContext2D, enemy: EnemyState, cameraX: number) {
@@ -92,40 +100,43 @@ function drawEnemy(ctx: CanvasRenderingContext2D, enemy: EnemyState, cameraX: nu
   }
 
   const x = enemy.x - cameraX;
+  const y = toScreenY(enemy.y);
   ctx.fillStyle = "#8f4d28";
-  ctx.fillRect(x + 4, enemy.y + 10, enemy.width - 8, enemy.height - 10);
+  ctx.fillRect(x + 4, y + 10, enemy.width - 8, enemy.height - 10);
   ctx.fillStyle = "#efdfc0";
-  ctx.fillRect(x + 10, enemy.y + 18, 6, 6);
-  ctx.fillRect(x + 22, enemy.y + 18, 6, 6);
+  ctx.fillRect(x + 10, y + 18, 6, 6);
+  ctx.fillRect(x + 22, y + 18, 6, 6);
   ctx.fillStyle = "#2e1a0d";
-  ctx.fillRect(x + 4, enemy.y + enemy.height - 6, 12, 6);
-  ctx.fillRect(x + 22, enemy.y + enemy.height - 6, 12, 6);
+  ctx.fillRect(x + 4, y + enemy.height - 6, 12, 6);
+  ctx.fillRect(x + 22, y + enemy.height - 6, 12, 6);
 }
 
 function drawFlag(ctx: CanvasRenderingContext2D, snapshot: GameSnapshot) {
   const flagX = snapshot.level.flag.x - snapshot.cameraX;
+  const flagY = toScreenY(snapshot.level.flag.y);
   ctx.fillStyle = "#ecf0f2";
-  ctx.fillRect(flagX, snapshot.level.flag.y, 8, snapshot.level.flag.height);
+  ctx.fillRect(flagX, flagY, 8, snapshot.level.flag.height);
   ctx.fillStyle = "#31c857";
-  ctx.fillRect(flagX + 8, snapshot.level.flag.y + 20, 52, 36);
+  ctx.fillRect(flagX + 8, flagY + 20, 52, 36);
 }
 
 function drawPlayer(ctx: CanvasRenderingContext2D, snapshot: GameSnapshot) {
   const { player } = snapshot;
   const x = player.x - snapshot.cameraX;
+  const y = toScreenY(player.y);
   const alpha = player.invincibleMs > 0 && Math.floor(player.invincibleMs / 100) % 2 === 0 ? 0.45 : 1;
   ctx.save();
   ctx.globalAlpha = alpha;
   ctx.fillStyle = "#de4638";
-  ctx.fillRect(x + 6, player.y, player.width - 12, 12);
-  ctx.fillRect(x + 2, player.y + 10, player.width - 4, 12);
+  ctx.fillRect(x + 6, y, player.width - 12, 12);
+  ctx.fillRect(x + 2, y + 10, player.width - 4, 12);
   ctx.fillStyle = "#3453d0";
-  ctx.fillRect(x + 4, player.y + 22, player.width - 8, player.height - 22);
+  ctx.fillRect(x + 4, y + 22, player.width - 8, player.height - 22);
   ctx.fillStyle = "#f4c29f";
-  ctx.fillRect(x + 10, player.y + 10, player.width - 20, 12);
+  ctx.fillRect(x + 10, y + 10, player.width - 20, 12);
   ctx.fillStyle = "#23160d";
   const eyeX = player.facing === "right" ? x + 24 : x + 12;
-  ctx.fillRect(eyeX, player.y + 14, 4, 4);
+  ctx.fillRect(eyeX, y + 14, 4, 4);
   ctx.restore();
 }
 
